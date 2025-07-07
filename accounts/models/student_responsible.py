@@ -10,8 +10,8 @@ class StudentResponsible(models.Model):
         ('outro', 'Outro'),
     ]
     
-    student = models.ForeignKey('accounts.StudentProfile', on_delete=models.CASCADE, related_name='responsibles_links')
-    responsible = models.ForeignKey('accounts.ResponsibleProfile', on_delete=models.CASCADE, related_name='students_links')
+    student = models.ForeignKey('accounts.StudentProfile', on_delete=models.PROTECT, related_name='responsibles_links')
+    responsible = models.ForeignKey('accounts.ResponsibleProfile', on_delete=models.PROTECT, related_name='students_links')
     relation = models.CharField(max_length=20, choices=RELATION_CHOICES)  # Ex: "pai", "mãe", "tutor legal"
     created_at = models.DateTimeField(auto_now_add=True)
 

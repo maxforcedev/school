@@ -9,7 +9,7 @@ phone_validator = RegexValidator(
 
 
 class StudentDocument(models.Model):
-    student = models.ForeignKey('StudentProfile', on_delete=models.CASCADE, related_name='documents')
+    student = models.ForeignKey('StudentProfile', on_delete=models.PROTECT , related_name='documents')
     file = models.FileField(upload_to='students/documents/')
     name = models.CharField(max_length=100)  # ex: "RG", "CPF", "Histórico Escolar"
     uploaded_at = models.DateTimeField(auto_now_add=True)
@@ -19,11 +19,11 @@ class StudentDocument(models.Model):
 
 
 class StudentProfile(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     cpf = models.CharField(max_length=14)
     phone = models.CharField(max_length=11, validators=[phone_validator], blank=True, null=True)
     birth_date = models.DateField(blank=True, null=True)
     photo = models.ImageField(upload_to='students/photos/', blank=True, null=True)
 
     def __str__(self):
-        return self.user
+        return str(self.user)

@@ -1,8 +1,7 @@
-import os
-import glob
-
-modules = glob.glob(os.path.dirname(__file__) + "/*.py")
-__all__ = [os.path.basename(f)[:-3] for f in modules if not f.endswith('__init__.py')]
-
-for module in __all__:
-    __import__(f'{__name__}.{module}')
+from .user import CustomUser
+from .school import School
+from .student_profile import StudentProfile, StudentDocument
+from .responsible_profile import ResponsibleProfile
+from .teacher_profile import TeacherProfile
+from .secretary_profile import SecretaryProfile
+from .student_responsible import StudentResponsible

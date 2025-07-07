@@ -9,10 +9,10 @@ phone_validator = RegexValidator(
 
 
 class TeacherProfile(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     cpf = models.CharField(max_length=14)
     phone = models.CharField(max_length=11, validators=[phone_validator], blank=True, null=True)
     photo = models.ImageField(upload_to='staff/photos/', blank=True, null=True)
 
     def __str__(self):
-        return self.user
+        return str(self.user)

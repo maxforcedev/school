@@ -9,10 +9,10 @@ phone_validator = RegexValidator(
 
 
 class ResponsibleProfile(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
     cpf = models.CharField(max_length=14)
     phone = models.CharField(max_length=11, validators=[phone_validator], blank=True, null=True)
     address = models.TextField(max_length=300, blank=True, null=True)
     
     def __str__(self):
-        return self.user
+        return str(self.user)
