@@ -1,5 +1,4 @@
 from django.db import models
-from accounts.models import Profile
 from django.core.exceptions import ValidationError
 
 
@@ -17,14 +16,17 @@ class StudentResponsible(models.Model):
     ]
 
     student = models.ForeignKey(
-        Profile,
+        'accounts.Profile',
         on_delete=models.PROTECT,
-        related_name='responsibles_links'
+        related_name='responsibles_links', 
+        limit_choices_to={'role': 'student'}
+        
     )
     responsible = models.ForeignKey(
-        Profile,
+        'accounts.Profile',
         on_delete=models.PROTECT,
-        related_name='students_links'
+        related_name='students_links',
+        limit_choices_to={'role': 'responsible'}
     )
     relation = models.CharField(max_length=20, choices=RELATION_CHOICES)
     created_at = models.DateTimeField(auto_now_add=True)

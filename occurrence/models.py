@@ -7,8 +7,8 @@ class Occurrence(models.Model):
         ('outro', 'Outro'),
     ]
 
-    student = models.ForeignKey('accounts.StudentProfile', on_delete=models.PROTECT)
-    recorded_by = models.ForeignKey('accounts.TeacherProfile', on_delete=models.SET_NULL, null=True, blank=True)
+    student = models.ForeignKey('accounts.Profile', on_delete=models.PROTECT, limit_choices_to={'role': 'student'})
+    recorded_by = models.ForeignKey('accounts.Profile', on_delete=models.SET_NULL, null=True, blank=True, limit_choices_to={'role': 'teacher'})
     classroom = models.ForeignKey('academic.Classroom', on_delete=models.PROTECT)
     academic_year = models.ForeignKey('academic.AcademicYear', on_delete=models.PROTECT)
     occurrence_type = models.CharField(max_length=20, choices=OCCURRENCE_TYPE_CHOICES)
