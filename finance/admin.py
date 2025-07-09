@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import Tuition
 
+
 @admin.register(Tuition)
 class TuitionAdmin(admin.ModelAdmin):
     list_display = ('student', 'responsible', 'reference_month', 'due_date', 'amount', 'status', 'payment_date')

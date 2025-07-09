@@ -1,6 +1,6 @@
 from django.db import models
-
 from django.db import models
+
 
 class Attendance(models.Model):
     student = models.ForeignKey('accounts.StudentProfile', on_delete=models.PROTECT)

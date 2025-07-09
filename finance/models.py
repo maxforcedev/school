@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Tuition(models.Model):
     STATUS_CHOICES = [
         ('pendente', 'Pendente'),
