@@ -1,13 +1,13 @@
-import re
 from django.contrib.auth import authenticate, login, get_user_model
 from django.views.generic import FormView, View
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.core.exceptions import ValidationError
-from accounts.services  import register_responsible_with_students
-from . import forms
 from django.http import HttpResponseRedirect
+from accounts.services import register_responsible_with_students
+from . import forms
+User = get_user_model()
 
 
 class LoginView(FormView):
@@ -44,8 +44,6 @@ class LoginView(FormView):
         return super().get_success_url()
 
 
-
-User = get_user_model()
 class RegisterView(View):
     template_name = 'accounts/register.html'
     success_url = reverse_lazy('login')

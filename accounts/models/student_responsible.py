@@ -16,9 +16,8 @@ class StudentResponsible(models.Model):
     student = models.ForeignKey(
         'accounts.Profile',
         on_delete=models.PROTECT,
-        related_name='responsibles_links', 
+        related_name='responsibles_links',
         limit_choices_to={'role': 'student'}
-        
     )
     responsible = models.ForeignKey(
         'accounts.Profile',

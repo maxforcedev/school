@@ -13,7 +13,7 @@ class ClassroomAdmin(admin.ModelAdmin):
 class SubjectAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
-    filter_horizontal = ('teachers',)  # interface mais amigável no admin
+    filter_horizontal = ('teachers',)
 
 
 @admin.register(Enrollment)

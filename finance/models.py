@@ -14,7 +14,7 @@ class Tuition(models.Model):
     due_date = models.DateField()
     amount = models.DecimalField(max_digits=8, decimal_places=2)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pendente')
-    reference_month = models.CharField(max_length=7) 
+    reference_month = models.CharField(max_length=7)
     payment_date = models.DateField(null=True, blank=True)
 
     def __str__(self):

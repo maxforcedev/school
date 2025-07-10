@@ -1,5 +1,6 @@
 import re
 
+
 def validar_cpf(cpf: str) -> bool:
     cpf = re.sub(r'\D', '', cpf)
     if len(cpf) != 11 or cpf == cpf[0] * 11:

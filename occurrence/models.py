@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Occurrence(models.Model):
     OCCURRENCE_TYPE_CHOICES = [
         ('advertencia', 'Advertência'),

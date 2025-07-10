@@ -4,6 +4,7 @@ import re
 
 User = get_user_model()
 
+
 class CPFPhoneEmailBackend(ModelBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
         if not username or not password:

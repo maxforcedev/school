@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 
 User = get_user_model()
 
+
 def register_responsible_with_students(data):
     required_fields = ['name', 'cpf', 'phone', 'email', 'address', 'number', 'district', 'cep']
     for field in required_fields:
@@ -27,11 +28,11 @@ def register_responsible_with_students(data):
     if User.objects.filter(phone=raw_phone).exists():
         raise ValidationError('Phone is already in use.')
 
-    # Create responsible user
     user = User.objects.create(
         email=data['email'],
         name=data['name'],
         cpf=raw_cpf,
+        is_active=False,
         phone=raw_phone
     )
     user.set_password(raw_cpf)
@@ -42,8 +43,8 @@ def register_responsible_with_students(data):
     profile.address = f"{data.get('address')}, {data.get('number')} - {data.get('district')}, ZIP: {data.get('cep')}"
     profile.save()
 
-    # Process student indexes
     student_indexes = set()
+
     for key in data.keys():
         if key.startswith("students[") and "][name]" in key:
             idx = key.split('[')[1].split(']')[0]
@@ -76,6 +77,7 @@ def register_responsible_with_students(data):
             email=student_email,
             name=student_name,
             cpf=student_cpf,
+            is_active=False,
             phone=student_phone
         )
         student_user.set_password(student_cpf)

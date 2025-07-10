@@ -60,4 +60,5 @@ class StudentResponsibleAdmin(admin.ModelAdmin):
     )
     list_filter = ('relation',)
 
+
 admin.site.register(models.CustomUser, CustomUserAdmin)

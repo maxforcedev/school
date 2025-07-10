@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import Occurrence
 
+
 @admin.register(Occurrence)
 class OccurrenceAdmin(admin.ModelAdmin):
     list_display = ('student', 'occurrence_type', 'classroom', 'date', 'academic_year', 'recorded_by')

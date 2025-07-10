@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 
+
 class Profile(models.Model):
     ROLE_CHOICES = [
         ('admin', 'Administração Geral'),
@@ -19,4 +20,3 @@ class Profile(models.Model):
 
     def __str__(self):
         return f'{self.user.name} ({self.role})'
-
