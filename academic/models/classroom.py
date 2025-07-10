@@ -1,9 +1,9 @@
 from django.db import models
 
 
-class Classroom(models.Model):
+class Classroom(models.Model):  # Turma
     name = models.CharField(max_length=100)
-    year = models.CharField(max_length=4)  # Ex: "2025"
+    year = models.CharField(max_length=4)
     shift = models.CharField(max_length=20, choices=[('manhã', 'Manhã'), ('tarde', 'Tarde'), ('noite', 'Noite')])
     academic_year = models.ForeignKey('academic.AcademicYear', on_delete=models.PROTECT)
     school = models.ForeignKey('accounts.School', on_delete=models.PROTECT)

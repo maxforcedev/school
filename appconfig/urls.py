@@ -6,4 +6,5 @@ urlpatterns = [
 
     path('', include('accounts.urls')),
     path('', include('dashboard.urls')),
+    path('', include('academic.urls')),
 ]
