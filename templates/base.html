@@ -2,147 +2,106 @@
 <!DOCTYPE html>
 <html lang="pt-br" class="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{% block title %}Sistema Escolar{% endblock %}</title>
+  <link rel="icon" href="{% static 'images/favicon.ico' %}" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/feather-icons"></script>
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  {% block head %}{% endblock %}
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-white">
+  <div class="min-h-screen flex">
 
-  <div class="flex min-h-screen">
     <!-- Sidebar -->
-    <aside class="w-64 bg-white dark:bg-gray-800 shadow-md p-4">
-      <div class="flex justify-center mb-6">
-        <img src="{% static 'images/logo-maxforcedev.png' %}" alt="Logo" class="h-12">
-      </div>
-      <ul class="space-y-1">
+    <aside class="w-64 bg-white dark:bg-gray-800 shadow-md">
+      <div class="p-6 text-center font-bold text-lg text-blue-600">Sistema Escolar</div>
+      <nav class="px-4 space-y-2">
         {% if request.user.profile.role == 'student' %}
-          <li><a href="/dashboard/student/" class="menu-item"><i data-feather="home"></i> Dashboard</a></li>
-          <li><a href="/subjects/" class="menu-item"><i data-feather="book"></i> Subjects</a></li>
-          <li><a href="/grades/" class="menu-item"><i data-feather="file-text"></i> Grades</a></li>
-          <li><a href="/schedule/" class="menu-item"><i data-feather="calendar"></i> Schedule</a></li>
-          <li><a href="/attendance/" class="menu-item"><i data-feather="check-circle"></i> Attendance</a></li>
-          <li><a href="/tasks/" class="menu-item"><i data-feather="clipboard-list"></i> Tasks</a></li>
-          <li><a href="/announcements/" class="menu-item"><i data-feather="bell"></i> Announcements</a></li>
-          <li><a href="/documents/" class="menu-item"><i data-feather="folder"></i> Documents</a></li>
-          <li><a href="/requests/" class="menu-item"><i data-feather="file-plus"></i> Requests</a></li>
-          <li><a href="/profile/" class="menu-item"><i data-feather="user"></i> Profile</a></li>
-
-        {% elif request.user.profile.role == 'responsible' %}
-          <li><a href="/dashboard/responsible/" class="menu-item"><i data-feather="home"></i> Dashboard</a></li>
-          <li class="menu-sub">
-            <div><i data-feather="users"></i> Students</div>
-            <ul class="pl-4 space-y-1">
-              <li><a href="/responsible/grades/">Grades</a></li>
-              <li><a href="/responsible/attendance/">Attendance</a></li>
-              <li><a href="/responsible/schedule/">Schedule</a></li>
-              <li><a href="/responsible/documents/">Documents</a></li>
-              <li><a href="/responsible/tasks/">Tasks</a></li>
-            </ul>
-          </li>
-          <li><a href="/responsible/announcements/" class="menu-item"><i data-feather="message-circle"></i> Messages</a></li>
-          <li><a href="/responsible/requests/" class="menu-item"><i data-feather="file-plus"></i> Requests</a></li>
-          <li><a href="/responsible/billing/" class="menu-item"><i data-feather="credit-card"></i> Billing</a></li>
-          <li><a href="/profile/" class="menu-item"><i data-feather="user"></i> Profile</a></li>
-
+          <a href="/dashboard/student/" class="flex items-center gap-2 py-2 px-3 rounded hover:bg-blue-100 dark:hover:bg-gray-700"><i data-feather="home"></i> Dashboard</a>
+          <a href="/subjects/" class="flex items-center gap-2 py-2 px-3 rounded hover:bg-blue-100 dark:hover:bg-gray-700"><i data-feather="book"></i> Minhas Matérias</a>
+          <a href="/grades/" class="flex items-center gap-2 py-2 px-3 rounded hover:bg-blue-100 dark:hover:bg-gray-700"><i data-feather="file-text"></i> Boletim / Notas</a>
+          <a href="/schedule/" class="flex items-center gap-2 py-2 px-3 rounded hover:bg-blue-100 dark:hover:bg-gray-700"><i data-feather="calendar"></i> Horário de Aulas</a>
+          <a href="/attendance/" class="flex items-center gap-2 py-2 px-3 rounded hover:bg-blue-100 dark:hover:bg-gray-700"><i data-feather="check-circle"></i> Frequência</a>
+          <a href="/tasks/" class="flex items-center gap-2 py-2 px-3 rounded hover:bg-blue-100 dark:hover:bg-gray-700"><i data-feather="clipboard"></i> Atividades</a>
+          <a href="/notices/" class="flex items-center gap-2 py-2 px-3 rounded hover:bg-blue-100 dark:hover:bg-gray-700"><i data-feather="bell"></i> Avisos</a>
+          <a href="/documents/" class="flex items-center gap-2 py-2 px-3 rounded hover:bg-blue-100 dark:hover:bg-gray-700"><i data-feather="folder"></i> Documentos</a>
+          <a href="/requests/" class="flex items-center gap-2 py-2 px-3 rounded hover:bg-blue-100 dark:hover:bg-gray-700"><i data-feather="file-plus"></i> Requerimentos</a>
+          <a href="/profile/" class="flex items-center gap-2 py-2 px-3 rounded hover:bg-blue-100 dark:hover:bg-gray-700"><i data-feather="user"></i> Perfil</a>
+        {% elif request.user.profile.role == 'guardian' %}
+          <a href="/dashboard/guardian/" class="flex items-center gap-2 py-2 px-3 rounded hover:bg-blue-100 dark:hover:bg-gray-700"><i data-feather="home"></i> Dashboard</a>
+          <div class="font-semibold text-sm mt-3 ml-2 text-gray-600 dark:text-gray-400">Alunos</div>
+          <a href="/guardian/grades/" class="ml-4 block py-1">Boletins</a>
+          <a href="/guardian/attendance/" class="ml-4 block py-1">Frequência</a>
+          <a href="/guardian/schedule/" class="ml-4 block py-1">Horários</a>
+          <a href="/guardian/documents/" class="ml-4 block py-1">Documentos</a>
+          <a href="/guardian/tasks/" class="ml-4 block py-1">Atividades</a>
+          <a href="/guardian/messages/" class="flex items-center gap-2 py-2 px-3 rounded hover:bg-blue-100 dark:hover:bg-gray-700"><i data-feather="message-circle"></i> Comunicados</a>
+          <a href="/guardian/requests/" class="flex items-center gap-2 py-2 px-3 rounded hover:bg-blue-100 dark:hover:bg-gray-700"><i data-feather="file-plus"></i> Requerimentos</a>
+          <a href="/guardian/finance/" class="flex items-center gap-2 py-2 px-3 rounded hover:bg-blue-100 dark:hover:bg-gray-700"><i data-feather="credit-card"></i> Financeiro</a>
+          <a href="/profile/" class="flex items-center gap-2 py-2 px-3 rounded hover:bg-blue-100 dark:hover:bg-gray-700"><i data-feather="user"></i> Perfil</a>
         {% elif request.user.profile.role == 'teacher' %}
-          <li><a href="/dashboard/teacher/" class="menu-item"><i data-feather="home"></i> Dashboard</a></li>
-          <li class="menu-sub">
-            <div><i data-feather="grid"></i> Classes</div>
-            <ul class="pl-4 space-y-1">
-              <li><a href="/classes/">My Classes</a></li>
-              <li><a href="/classes/students/">Student List</a></li>
-              <li><a href="/grades/register/">Enter Grades</a></li>
-              <li><a href="/schedule/teacher/">Schedules</a></li>
-            </ul>
-          </li>
-          <li class="menu-sub">
-            <div><i data-feather="check-square"></i> Attendance</div>
-            <ul class="pl-4 space-y-1">
-              <li><a href="/attendance/record/">Record</a></li>
-              <li><a href="/attendance/history/">History</a></li>
-            </ul>
-          </li>
-          <li><a href="/activities/" class="menu-item"><i data-feather="clipboard"></i> Activities</a></li>
-          <li><a href="/announcements/create/" class="menu-item"><i data-feather="bell"></i> Announcements</a></li>
-          <li><a href="/profile/" class="menu-item"><i data-feather="user"></i> Profile</a></li>
-
+          <a href="/dashboard/teacher/" class="flex items-center gap-2 py-2 px-3 rounded hover:bg-blue-100 dark:hover:bg-gray-700"><i data-feather="home"></i> Dashboard</a>
+          <div class="font-semibold text-sm mt-3 ml-2 text-gray-600 dark:text-gray-400">Turmas</div>
+          <a href="/classes/" class="ml-4 block py-1">Minhas Turmas</a>
+          <a href="/classes/students/" class="ml-4 block py-1">Lista de Alunos</a>
+          <a href="/grades/input/" class="ml-4 block py-1">Lançar Notas</a>
+          <a href="/schedule/teacher/" class="ml-4 block py-1">Horários</a>
+          <div class="font-semibold text-sm mt-3 ml-2 text-gray-600 dark:text-gray-400">Chamada</div>
+          <a href="/attendance/mark/" class="ml-4 block py-1">Fazer Chamada</a>
+          <a href="/attendance/history/" class="ml-4 block py-1">Histórico</a>
+          <a href="/activities/" class="flex items-center gap-2 py-2 px-3 rounded hover:bg-blue-100 dark:hover:bg-gray-700"><i data-feather="clipboard"></i> Atividades</a>
+          <a href="/notices/create/" class="flex items-center gap-2 py-2 px-3 rounded hover:bg-blue-100 dark:hover:bg-gray-700"><i data-feather="bell"></i> Avisos</a>
+          <a href="/profile/" class="flex items-center gap-2 py-2 px-3 rounded hover:bg-blue-100 dark:hover:bg-gray-700"><i data-feather="user"></i> Perfil</a>
         {% elif request.user.profile.role == 'secretary' %}
-          <li><a href="/dashboard/secretary/" class="menu-item"><i data-feather="home"></i> Dashboard</a></li>
-          <li class="menu-sub">
-            <div><i data-feather="users"></i> People</div>
-            <ul class="pl-4 space-y-1">
-              <li><a href="/secretary/students/">Students</a></li>
-              <li><a href="/secretary/responsibles/">Guardians</a></li>
-              <li><a href="/secretary/teachers/">Teachers</a></li>
-            </ul>
-          </li>
-          <li class="menu-sub">
-            <div><i data-feather="school"></i> School</div>
-            <ul class="pl-4 space-y-1">
-              <li><a href="/secretary/classes/">Classes</a></li>
-              <li><a href="/secretary/subjects/">Subjects</a></li>
-              <li><a href="/secretary/schedules/">Schedules</a></li>
-              <li><a href="/secretary/enrollments/">Enrollments</a></li>
-            </ul>
-          </li>
-          <li class="menu-sub">
-            <div><i data-feather="folder"></i> Docs & Attendance</div>
-            <ul class="pl-4 space-y-1">
-              <li><a href="/secretary/documents/">Documents</a></li>
-              <li><a href="/attendance/justifications/">Justifications</a></li>
-              <li><a href="/attendance/reports/">Reports</a></li>
-            </ul>
-          </li>
-          <li><a href="/secretary/billing/" class="menu-item"><i data-feather="dollar-sign"></i> Billing</a></li>
-          <li><a href="/profile/" class="menu-item"><i data-feather="user"></i> Profile</a></li>
-
+          <a href="/dashboard/secretary/" class="flex items-center gap-2 py-2 px-3 rounded hover:bg-blue-100 dark:hover:bg-gray-700"><i data-feather="home"></i> Dashboard</a>
+          <div class="font-semibold text-sm mt-3 ml-2 text-gray-600 dark:text-gray-400">Gestão de Pessoas</div>
+          <a href="/secretary/students/" class="ml-4 block py-1">Alunos</a>
+          <a href="/secretary/guardians/" class="ml-4 block py-1">Responsáveis</a>
+          <a href="/secretary/teachers/" class="ml-4 block py-1">Professores</a>
+          <div class="font-semibold text-sm mt-3 ml-2 text-gray-600 dark:text-gray-400">Gestão Escolar</div>
+          <a href="/secretary/classes/" class="ml-4 block py-1">Turmas</a>
+          <a href="/secretary/subjects/" class="ml-4 block py-1">Disciplinas</a>
+          <a href="/secretary/schedules/" class="ml-4 block py-1">Horários</a>
+          <a href="/secretary/enrollments/" class="ml-4 block py-1">Matrículas</a>
+          <div class="font-semibold text-sm mt-3 ml-2 text-gray-600 dark:text-gray-400">Documentos e Frequência</div>
+          <a href="/secretary/documents/" class="ml-4 block py-1">Documentos</a>
+          <a href="/attendance/justifications/" class="ml-4 block py-1">Justificativas</a>
+          <a href="/attendance/reports/" class="ml-4 block py-1">Frequência</a>
+          <a href="/secretary/finance/" class="flex items-center gap-2 py-2 px-3 rounded hover:bg-blue-100 dark:hover:bg-gray-700"><i data-feather="dollar-sign"></i> Financeiro</a>
+          <a href="/profile/" class="flex items-center gap-2 py-2 px-3 rounded hover:bg-blue-100 dark:hover:bg-gray-700"><i data-feather="user"></i> Perfil</a>
         {% elif request.user.profile.role == 'admin' %}
-          <li><a href="/dashboard/admin/" class="menu-item"><i data-feather="home"></i> Dashboard</a></li>
-          <li class="menu-sub">
-            <div><i data-feather="users"></i> Users</div>
-            <ul class="pl-4 space-y-1">
-              <li><a href="/admin/users/">All Users</a></li>
-              <li><a href="/admin/permissions/">Permissions</a></li>
-            </ul>
-          </li>
-          <li class="menu-sub">
-            <div><i data-feather="layers"></i> School</div>
-            <ul class="pl-4 space-y-1">
-              <li><a href="/admin/schools/">Schools</a></li>
-              <li><a href="/admin/classes/">Classes</a></li>
-              <li><a href="/admin/schedules/">Schedules</a></li>
-              <li><a href="/admin/calendar/">Calendar</a></li>
-            </ul>
-          </li>
-          <li class="menu-sub">
-            <div><i data-feather="bar-chart-2"></i> Reports</div>
-            <ul class="pl-4 space-y-1">
-              <li><a href="/admin/reports/">Performance</a></li>
-              <li><a href="/admin/logs/">Logs</a></li>
-            </ul>
-          </li>
-          <li><a href="/admin/config/" class="menu-item"><i data-feather="settings"></i> Settings</a></li>
-          <li><a href="/profile/" class="menu-item"><i data-feather="user"></i> Profile</a></li>
+          <a href="/dashboard/admin/" class="flex items-center gap-2 py-2 px-3 rounded hover:bg-blue-100 dark:hover:bg-gray-700"><i data-feather="home"></i> Dashboard</a>
+          <div class="font-semibold text-sm mt-3 ml-2 text-gray-600 dark:text-gray-400">Usuários</div>
+          <a href="/admin/users/" class="ml-4 block py-1">Todos os Usuários</a>
+          <a href="/admin/permissions/" class="ml-4 block py-1">Permissões</a>
+          <div class="font-semibold text-sm mt-3 ml-2 text-gray-600 dark:text-gray-400">Gestão Escolar</div>
+          <a href="/admin/schools/" class="ml-4 block py-1">Escolas</a>
+          <a href="/admin/classes/" class="ml-4 block py-1">Turmas</a>
+          <a href="/admin/schedules/" class="ml-4 block py-1">Horários</a>
+          <a href="/admin/calendar/" class="ml-4 block py-1">Calendário</a>
+          <div class="font-semibold text-sm mt-3 ml-2 text-gray-600 dark:text-gray-400">Relatórios e Logs</div>
+          <a href="/admin/reports/" class="ml-4 block py-1">Desempenho</a>
+          <a href="/admin/logs/" class="ml-4 block py-1">Acessos e Auditoria</a>
+          <a href="/admin/config/" class="flex items-center gap-2 py-2 px-3 rounded hover:bg-blue-100 dark:hover:bg-gray-700"><i data-feather="settings"></i> Configurações</a>
+          <a href="/profile/" class="flex items-center gap-2 py-2 px-3 rounded hover:bg-blue-100 dark:hover:bg-gray-700"><i data-feather="user"></i> Perfil</a>
         {% endif %}
 
-        <li class="mt-4 border-t border-gray-300 dark:border-gray-600 pt-2">
-          <a href="/change-password/" class="menu-item"><i data-feather="key"></i> Change Password</a>
-        </li>
-        <li>
-          <a href="/logout/" class="menu-item text-red-500"><i data-feather="log-out"></i> Logout</a>
-        </li>
-      </ul>
+        <!-- Menu comum -->
+        <hr class="my-3 border-gray-300 dark:border-gray-600">
+        <a href="/change-password/" class="flex items-center gap-2 py-2 px-3 rounded hover:bg-red-100 dark:hover:bg-red-800"><i data-feather="key"></i> Alterar Senha</a>
+        <a href="/logout/" class="flex items-center gap-2 py-2 px-3 rounded hover:bg-red-100 dark:hover:bg-red-800"><i data-feather="log-out"></i> Sair</a>
+      </nav>
     </aside>
 
-    <!-- Conteúdo Principal -->
-    <main class="flex-1 p-6">
+    <!-- Conteúdo -->
+    <main class="flex-1 p-6 md:p-10">
       {% block content %}{% endblock %}
     </main>
   </div>
 
-  <script>feather.replace()</script>
+  <script>
+    feather.replace();
+  </script>
 </body>
 </html>

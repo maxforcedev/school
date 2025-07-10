@@ -7,6 +7,8 @@ from django.contrib import messages
 from django.core.exceptions import ValidationError
 from accounts.services  import register_responsible_with_students
 from . import forms
+from django.http import HttpResponseRedirect
+
 
 class LoginView(FormView):
     template_name = 'accounts/login.html'
@@ -16,34 +18,31 @@ class LoginView(FormView):
     def form_valid(self, form):
         username = form.cleaned_data.get('username')
         password = form.cleaned_data.get('password')
-
         user = authenticate(self.request, username=username, password=password)
 
-        if user:
+        if user is not None:
             login(self.request, user)
-            return redirect(self.get_success_url())
+            return HttpResponseRedirect(self.get_success_url())
         else:
-            form.add_error(None, 'Usuario ou senha não encontradas ou incorretas.')
+            form.add_error(None, 'Usuário ou senha incorretos.')
             return self.form_invalid(form)
 
     def get_success_url(self):
         user = self.request.user
-
         if hasattr(user, 'profile'):
-            role = user.profile.role
-            
-            if role == 'responsible':
-                return reverse_lazy('responsible_dashboard')
-            elif role == 'student':
-                return reverse_lazy('student_dashboard')
-            elif role == 'teacher':
-                return reverse_lazy('teacher_dashboard')
-            elif role == 'secretary':
-                return reverse_lazy('secretary_dashboard')
-            elif role == 'admin':
-                return reverse_lazy('admin_dashboard')
+            match user.profile.role:
+                case 'responsible':
+                    return reverse_lazy('responsible_dashboard')
+                case 'student':
+                    return reverse_lazy('student_dashboard')
+                case 'teacher':
+                    return reverse_lazy('teacher_dashboard')
+                case 'secretary':
+                    return reverse_lazy('secretary_dashboard')
+                case 'admin':
+                    return reverse_lazy('admin_dashboard')
+        return super().get_success_url()
 
-        return self.success_url
 
 
 User = get_user_model()

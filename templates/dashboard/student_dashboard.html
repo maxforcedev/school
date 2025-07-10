@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard do Aluno{% endblock %}
+
+{% block content %}
+  <div class="text-2xl font-bold mb-6">Bem-vindo ao Painel do Aluno</div>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Cartões de exemplo -->
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow text-center">
+      <div class="text-gray-600 dark:text-gray-300">Notas</div>
+      <div class="text-3xl font-semibold text-blue-600">--</div>
+    </div>
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow text-center">
+      <div class="text-gray-600 dark:text-gray-300">Frequência</div>
+      <div class="text-3xl font-semibold text-blue-600">--</div>
+    </div>
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow text-center">
+      <div class="text-gray-600 dark:text-gray-300">Atividades</div>
+      <div class="text-3xl font-semibold text-blue-600">--</div>
+    </div>
+  </div>
+{% endblock %}
