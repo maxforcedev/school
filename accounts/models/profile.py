@@ -14,8 +14,6 @@ class Profile(models.Model):
     ]
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    phone = models.CharField(max_length=20, unique=True)
-    cpf = models.CharField(max_length=14, unique=True)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
     role = models.CharField(max_length=15, choices=ROLE_CHOICES)
 

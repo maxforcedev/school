@@ -1,24 +1,44 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html lang="pt-br" class="dark">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Entrar - Projeto Escolar</title>
+  <title>Entrar - MaxSchool</title>
+
+  <!-- Configura o Tailwind para usar darkMode por classe -->
+  <script>
+    tailwind = {
+      config: {
+        darkMode: 'class'
+      }
+    };
+  </script>
+
+  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 flex items-center justify-center min-h-screen px-4">
 
-  <div class="w-full max-w-md bg-white dark:bg-gray-800 p-8 rounded-xl shadow-md space-y-6">
-    
+  <div class="w-full max-w-md bg-white dark:bg-gray-800 p-8 rounded-xl shadow-md space-y-6 relative">
+
+    <!-- LOGO -->
+    <div class="flex justify-center mb-4">
+      <img src="{% static 'images/logo-maxforcedev.png' %}" alt="Logo do sistema" class="h-16 md:h-20 max-w-xs" />
+    </div>
+
+    <!-- TÍTULO -->
     <h1 class="text-2xl font-bold text-center text-gray-800 dark:text-white">Acesso ao Sistema</h1>
 
+    <!-- FORMULÁRIO -->
     <form method="post" class="space-y-4">
-      <!-- {% csrf_token %} se for usar com Django -->
+      {% csrf_token %}
       <div>
-        <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">E-mail</label>
-        <input type="email" id="email" name="email" required
+        <label for="user" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Usuario</label>
+        <input type="text" id="user" name="user" required
           class="mt-1 w-full px-4 py-2 border rounded-md bg-gray-50 dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Digite seu e-mail">
+          placeholder="Telefone, E-mail ou CPF">
       </div>
 
       <div>
@@ -34,6 +54,7 @@
       </button>
     </form>
 
+    <!-- LINKS -->
     <div class="text-center text-sm text-gray-600 dark:text-gray-400">
       <p>
         <a href="/register" class="text-blue-600 dark:text-blue-400 hover:underline">Criar uma conta</a> |
@@ -41,10 +62,14 @@
       </p>
     </div>
 
-    <div class="text-center pt-4">
+    <!-- BOTÃO TOGGLE -->
+    <div class="absolute top-4 right-4">
       <button onclick="document.documentElement.classList.toggle('dark')"
-        class="text-xs text-gray-500 dark:text-gray-300 hover:underline">
-        Alternar modo claro/escuro
+        class="bg-gray-200 dark:bg-gray-700 p-2 rounded-full hover:ring-2 hover:ring-blue-500 transition"
+        title="Alternar modo claro/escuro">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-800 dark:text-gray-200" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm0 14a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm8-6a1 1 0 00-1-1h-1a1 1 0 100 2h1a1 1 0 001-1zM4 10a1 1 0 00-1-1H2a1 1 0 100 2h1a1 1 0 001-1zm11.07-5.07a1 1 0 010 1.414l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 0zM6.343 15.657a1 1 0 010-1.414l.707-.707a1 1 0 111.414 1.414l-.707.707a1 1 0 01-1.414 0zm8.485 0a1 1 0 00-1.414 0l-.707-.707a1 1 0 111.414-1.414l.707.707a1 1 0 000 1.414zM6.343 4.343a1 1 0 00-1.414 0l-.707-.707A1 1 0 116.636 2.22l.707.707a1 1 0 000 1.414z" />
+        </svg>
       </button>
     </div>
 

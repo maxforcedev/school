@@ -31,10 +31,17 @@ class UserDocumentInline(admin.TabularInline):
 
 @admin.register(models.Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'role', 'cpf', 'phone')
-    search_fields = ('user__email', 'user__name', 'cpf', 'phone')
+    list_display = ('user', 'role', 'get_cpf', 'get_phone')
+    search_fields = ('user__name', 'user__email', 'user__cpf', 'user__phone')
     list_filter = ('role',)
-    inlines = [UserDocumentInline]
+
+    def get_cpf(self, obj):
+        return obj.user.cpf
+    get_cpf.short_description = 'CPF'
+
+    def get_phone(self, obj):
+        return obj.user.phone
+    get_phone.short_description = 'Telefone'
 
 
 @admin.register(models.School)

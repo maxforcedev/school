@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-br" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cadastro Escolar</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-white">
+
+  <div class="max-w-4xl mx-auto p-6">
+    <h1 class="text-3xl font-bold text-center text-gray-800 dark:text-white mb-6">Formulário de Cadastro Escolar</h1>
+
+    <form id="registerForm" method="post" class="space-y-8">
+    {% csrf_token %}
+    {% if messages %}
+      <div class="mt-4 space-y-2">
+        {% for message in messages %}
+          <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded shadow">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+      <!-- Dados do Responsável -->
+      <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow">
+        <h2 class="text-xl font-semibold mb-4">📁 Dados do Responsável</h2>
+        <div class="grid grid-cols-1 gap-4">
+          <input name="name" type="text" placeholder="Nome completo" required class="w-full rounded px-3 py-2 dark:bg-gray-700" />
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+          <input name="cpf" type="text" maxlength="14" placeholder="CPF" required class="w-full rounded px-3 py-2 dark:bg-gray-700 cpf" />
+          <input name="phone" type="text" placeholder="Telefone" required class="w-full rounded px-3 py-2 dark:bg-gray-700 phone" />
+          <input name="email" type="email" placeholder="E-mail" required class="w-full rounded px-3 py-2 dark:bg-gray-700" />
+        </div>
+      </div>
+
+      <!-- Endereço -->
+      <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow">
+        <h2 class="text-xl font-semibold mb-4">🏠 Endereço</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input name="address" type="text" placeholder="Rua" required class="w-full rounded px-3 py-2 dark:bg-gray-700" />
+          <input name="number" type="text" placeholder="Número" required class="w-full rounded px-3 py-2 dark:bg-gray-700" />
+          <input name="district" type="text" placeholder="Bairro" required class="w-full rounded px-3 py-2 dark:bg-gray-700" />
+          <input name="cep" type="text" placeholder="CEP" required class="w-full rounded px-3 py-2 dark:bg-gray-700 cep" />
+        </div>
+      </div>
+
+      <!-- Alunos -->
+      <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow">
+        <h2 class="text-xl font-semibold mb-4">🎓 Alunos</h2>
+        <div id="students" class="space-y-4"></div>
+        <button type="button" onclick="addStudent()" class="text-sm text-blue-400 hover:underline mt-2">+ Adicionar outro aluno</button>
+      </div>
+
+      <!-- Botões -->
+      <div class="flex flex-col md:flex-row gap-4">
+        <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold">Finalizar Cadastro</button>
+        <a href="/login" class="flex-1 text-center bg-gray-500 hover:bg-gray-600 text-white py-3 rounded-lg font-semibold">Voltar ao Login</a>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const MAX_STUDENTS = 3;
+    const maskCPF = (v) => v.replace(/\D/g, '').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    const maskPhone = (v) => v.replace(/\D/g, '').replace(/(\d{2})(\d)/, '($1) $2').replace(/(\d{5})(\d)/, '$1-$2').substring(0, 15);
+    const maskCEP = (v) => v.replace(/\D/g, '').replace(/(\d{5})(\d)/, '$1-$2').substring(0, 9);
+
+    
+    const applyMasks = () => {
+      document.querySelectorAll('.cpf').forEach(input => {
+        input.addEventListener('input', () => input.value = maskCPF(input.value));
+      });
+      document.querySelectorAll('.phone').forEach(input => {
+        input.addEventListener('input', () => input.value = maskPhone(input.value));
+      });
+      document.querySelectorAll('.cep').forEach(input => {
+        input.addEventListener('input', () => input.value = maskCEP(input.value));
+      });
+    };
+
+    const vinculoMap = {
+      father: 'Filho(a)',
+      mother: 'Filho(a)',
+      stepfather: 'Enteado(a)',
+      stepmother: 'Enteado(a)',
+      grandparent: 'Neto(a)',
+      legal_guardian: 'Dependente',
+      other: 'Outro'
+    };
+
+    let studentCount = 0;
+
+    function addStudent() {
+      if (studentCount >= MAX_STUDENTS) {
+        alert("Você só pode cadastrar até " + MAX_STUDENTS + " alunos.");
+        return;
+      }
+
+      const index = studentCount++;
+      const div = document.createElement('div');
+      div.className = "bg-gray-100 dark:bg-gray-700 p-4 rounded border border-gray-300 dark:border-gray-600";
+      div.innerHTML = `
+        <div class="flex justify-between items-center mb-3">
+          <h3 class="font-semibold">Aluno ${index + 1}</h3>
+          ${index > 0 ? '<button type="button" class="text-red-400 hover:underline text-sm" onclick="removeStudent(this)">Remover</button>' : ''}
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <input name="students[${index}][name]" required type="text" placeholder="Nome do aluno" class="w-full rounded px-3 py-2 dark:bg-gray-600" />
+          <input name="students[${index}][birth_date]" required type="date" class="w-full rounded px-3 py-2 dark:bg-gray-600" />
+          <input name="students[${index}][cpf]" required type="text" maxlength="14" placeholder="CPF do aluno" class="w-full rounded px-3 py-2 dark:bg-gray-600 cpf" />
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <input name="students[${index}][phone]" required type="text" placeholder="Telefone do aluno" class="w-full rounded px-3 py-2 dark:bg-gray-600 phone" />
+          <input name="students[${index}][email]" required type="email" placeholder="E-mail do aluno" class="w-full rounded px-3 py-2 dark:bg-gray-600" />
+          <select name="students[${index}][relation]" required onchange="this.title = vinculoMap[this.value] || ''" class="w-full rounded px-3 py-2 dark:bg-gray-600">
+            <option disabled selected>Vínculo com responsável</option>
+            <option value="father">Pai - Filho(a)</option>
+            <option value="mother">Mãe - Filho(a)</option>
+            <option value="stepfather">Padrasto - Enteado(a)</option>
+            <option value="stepmother">Madrasta - Enteado(a)</option>
+            <option value="grandparent">Avô/Avó - Neto(a)</option>
+            <option value="legal_guardian">Tutor Legal - Dependente</option>
+            <option value="other">Outro</option>
+          </select>
+        </div>`;
+      document.getElementById('students').appendChild(div);
+      applyMasks();
+    }
+
+    function removeStudent(button) {
+      button.closest('div.bg-gray-100').remove();
+      studentCount--;
+    }
+
+    window.onload = () => {
+      addStudent();
+      applyMasks();
+    };
+  </script>
+</body>
+</html>

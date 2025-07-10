@@ -9,8 +9,6 @@ class StudentResponsible(models.Model):
         ('stepfather', 'Padrasto'),
         ('stepmother', 'Madrasta'),
         ('grandparent', 'Avô/Avó'),
-        ('sibling', 'Irmão/Irmã'),
-        ('uncle_aunt', 'Tio/Tia'),
         ('legal_guardian', 'Tutor Legal'),
         ('other', 'Outro'),
     ]
