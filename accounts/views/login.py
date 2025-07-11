@@ -1,12 +1,8 @@
 from django.contrib.auth import authenticate, login, get_user_model
-from django.views.generic import FormView, View
-from django.shortcuts import redirect, render
+from django.views.generic import FormView
 from django.urls import reverse_lazy
-from django.contrib import messages
-from django.core.exceptions import ValidationError
 from django.http import HttpResponseRedirect
-from accounts.services import register_responsible_with_students
-from . import forms
+from accounts import forms
 User = get_user_model()
 
 
@@ -42,19 +38,3 @@ class LoginView(FormView):
                 case 'admin':
                     return reverse_lazy('admin_dashboard')
         return super().get_success_url()
-
-
-class RegisterView(View):
-    template_name = 'accounts/register.html'
-    success_url = reverse_lazy('login')
-
-    def get(self, request, *args, **kwargs):
-        return render(request, self.template_name)
-
-    def post(self, request, *args, **kwargs):
-        try:
-            register_responsible_with_students(request.POST)
-        except ValidationError as e:
-            messages.error(request, str(e))
-            return redirect('register')
-        return redirect(self.success_url)

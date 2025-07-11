@@ -1,0 +1,42 @@
+<a href="/dashboard/admin/" class="hover:text-blue-400 flex items-center gap-2"><i data-feather="home"></i> Dashboard</a>
+
+<!-- Gestão de Usuários -->
+<div class="group">
+  <button onclick="toggleMenu(this)" class="w-full flex justify-between items-center py-2 px-2 rounded hover:bg-gray-800">
+    <span class="flex gap-2 items-center"><i data-feather="users"></i> Usuários</span>
+    <i data-feather="chevron-down"></i>
+  </button>
+  <div class="hidden submenu pl-8 py-1 space-y-1">
+    <a href="/admin/usuarios/" class="block hover:text-blue-400">Todos os Usuários</a>
+    <a href="/admin/permissoes/" class="block hover:text-blue-400">Permissões</a>
+  </div>
+</div>
+
+<!-- Gestão Escolar -->
+<div class="group">
+  <button onclick="toggleMenu(this)" class="w-full flex justify-between items-center py-2 px-2 rounded hover:bg-gray-800">
+    <span class="flex gap-2 items-center"><i data-feather="layers"></i> Gestão Escolar</span>
+    <i data-feather="chevron-down"></i>
+  </button>
+  <div class="hidden submenu pl-8 py-1 space-y-1">
+    <a href="/admin/escolas/" class="block hover:text-blue-400">Escolas</a>
+    <a href="/admin/turmas/" class="block hover:text-blue-400">Turmas</a>
+    <a href="/admin/horarios/" class="block hover:text-blue-400">Horários</a>
+    <a href="/admin/calendario/" class="block hover:text-blue-400">Calendário</a>
+  </div>
+</div>
+
+<!-- Relatórios e Logs -->
+<div class="group">
+  <button onclick="toggleMenu(this)" class="w-full flex justify-between items-center py-2 px-2 rounded hover:bg-gray-800">
+    <span class="flex gap-2 items-center"><i data-feather="bar-chart-2"></i> Relatórios e Logs</span>
+    <i data-feather="chevron-down"></i>
+  </button>
+  <div class="hidden submenu pl-8 py-1 space-y-1">
+    <a href="/admin/relatorios/" class="block hover:text-blue-400">Desempenho</a>
+    <a href="/admin/logs/" class="block hover:text-blue-400">Acessos e Auditoria</a>
+  </div>
+</div>
+
+<a href="/admin/config/" class="hover:text-blue-400 flex items-center gap-2"><i data-feather="settings"></i> Configurações</a>
+<a href="/perfil/" class="hover:text-blue-400 flex items-center gap-2"><i data-feather="user"></i> Perfil</a>

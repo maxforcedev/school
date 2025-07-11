@@ -11,22 +11,22 @@ def register_responsible_with_students(data):
     required_fields = ['name', 'cpf', 'phone', 'email', 'address', 'number', 'district', 'cep']
     for field in required_fields:
         if not data.get(field, '').strip():
-            raise ValidationError(f'The field "{field}" is required.')
+            raise ValidationError(f'O campo "{field}" é obrigatorio.')
 
     raw_cpf = re.sub(r'\D', '', data['cpf'])
     raw_phone = re.sub(r'\D', '', data['phone'])
 
     if not validar_cpf(raw_cpf):
-        raise ValidationError('Invalid CPF for responsible.')
+        raise ValidationError('CPF do responsavel é invalido.')
 
     if User.objects.filter(email=data['email']).exists():
-        raise ValidationError('Email is already in use.')
+        raise ValidationError("Já existe um usuário com este e-mail cadastrado.")
 
     if User.objects.filter(cpf=raw_cpf).exists():
-        raise ValidationError('CPF is already in use.')
+        raise ValidationError("Já existe um usuário com este cpf cadastrado.")
 
     if User.objects.filter(phone=raw_phone).exists():
-        raise ValidationError('Phone is already in use.')
+        raise ValidationError("Já existe um usuário com este telefone cadastrado.")
 
     user = User.objects.create(
         email=data['email'],
@@ -62,16 +62,16 @@ def register_responsible_with_students(data):
             raise ValidationError(f'All fields for student {student_name or f"#{idx}"} are required.')
 
         if not validar_cpf(student_cpf):
-            raise ValidationError(f'Invalid CPF for student {student_name}.')
+            raise ValidationError(f'CPF invalido do estudante {student_name}.')
 
         if User.objects.filter(cpf=student_cpf).exists():
-            raise ValidationError(f'CPF for student {student_name} is already in use.')
+            raise ValidationError(f'CPF do estudante {student_name} ja esta em uso.')
 
         if User.objects.filter(email=student_email).exists():
-            raise ValidationError(f'Email for student {student_name} is already in use.')
+            raise ValidationError(f'Email do estudante {student_name} ja esta em uso.')
 
         if User.objects.filter(phone=student_phone).exists():
-            raise ValidationError(f'Phone for student {student_name} is already in use.')
+            raise ValidationError(f'Telefone do estudante {student_name} ja esta em uso.')
 
         student_user = User.objects.create(
             email=student_email,

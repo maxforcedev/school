@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Gestão de Usuários{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-6 space-y-6">
+
+  <div class="flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-gray-800 dark:text-white">👥 Usuários</h1>
+    <button onclick="toggleModal()" class="bg-green-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+      + Novo Usuário
+    </button>
+  </div>
+
+  <!-- FILTROS -->
+  <form method="GET" class="bg-white dark:bg-gray-800 p-4 rounded shadow flex flex-wrap gap-4">
+    <input type="text" name="q" value="{{ q }}" placeholder="🔎 Nome, CPF, Email ou Telefone" class="flex-1 px-3 py-2 rounded border dark:bg-gray-700 dark:text-white" />
+    <select name="role" class="px-3 py-2 rounded border dark:bg-gray-700 dark:text-white">
+      <option value="">Todos os Cargos</option>
+      <option value="direction" {% if request.GET.role == 'direction' %}selected{% endif %}>Direção</option>
+      <option value="coordinator" {% if request.GET.role == 'coordinator' %}selected{% endif %}>Coordenador(a)</option>
+      <option value="secretary" {% if request.GET.role == 'secretary' %}selected{% endif %}>Secretário(a)</option>
+      <option value="teacher" {% if request.GET.role == 'teacher' %}selected{% endif %}>Professor(a)</option>
+      <option value="student" {% if request.GET.role == 'student' %}selected{% endif %}>Aluno(a)</option>
+      <option value="responsible" {% if request.GET.role == 'responsible' %}selected{% endif %}>Responsavel</option>
+      <option value="support" {% if request.GET.role == 'support' %}selected{% endif %}>Suporte</option>
+    </select>
+    <button type="submit" class="bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-800 dark:text-white px-4 py-2 rounded">Filtrar</button>
+  </form>
+
+  <!-- TABELA -->
+  {% if users %}
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white dark:bg-gray-800 rounded shadow text-sm">
+      <thead class="bg-gray-100 dark:bg-gray-700">
+        <tr>
+          <th class="px-4 py-2 text-left">Nome</th>
+          <th class="px-4 py-2 text-left">Telefone</th>
+          <th class="px-4 py-2 text-left">Email</th>
+          <th class="px-4 py-2 text-left">CPF</th>
+          <th class="px-4 py-2 text-left">Cargo</th>
+          <th class="px-4 py-2 text-right">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for profile in users %}
+        <tr class="border-b border-gray-200 dark:border-gray-700">
+          <td class="px-4 py-2">{% if profile.user.name %} {{ profile.user.name }} {% else %} Não encontrado {% endif %}</td>
+          <td class="px-4 py-2">{% if profile.user.phone %} {{ profile.user.phone }} {% else %} Não encontrado {% endif %}</td>
+          <td class="px-4 py-2">{% if profile.user.email %} {{ profile.user.email }} {% else %} Não encontrado {% endif %}</td>
+          <td class="px-4 py-2">{% if profile.user.cpf %} {{ profile.user.cpf }} {% else %} Não encontrado {% endif %}</td>
+          <td class="px-4 py-2 capitalize">{% if profile.get_role_display %} {{ profile.get_role_display }} {% else %} Não encontrado {% endif %}</td>
+          <td class="px-4 py-2 text-right space-x-2">
+            <a href="{% url 'adm_edit_user' user.id %}" class="inline-flex items-center px-3 py-1 bg-yellow-400 hover:bg-yellow-500 text-white rounded">
+              ✏️ <span class="ml-1">Editar</span>
+            </a>
+            <a href="{% url 'adm_delete_user' user.id %}" class="inline-flex items-center px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded">
+              🗑️ <span class="ml-1">Excluir</span>
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    <div class="text-gray-600 dark:text-gray-300">Nenhum usuário encontrado.</div>
+  {% endif %}
+
+</div>
+
+<!-- MODAL NOVO USUÁRIO -->
+<div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+  <div class="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg w-full max-w-lg">
+    <h2 class="text-xl font-semibold mb-4 text-gray-800 dark:text-white">➕ Novo Usuário</h2>
+    <form method="POST" action="{% url 'adm_create_user' %}" class="space-y-4">
+      {% csrf_token %}
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <input type="text" name="name" required placeholder="Nome completo" class="w-full px-3 py-2 rounded dark:bg-gray-700" />
+        <input type="text" name="phone" required placeholder="Telefone" class="w-full px-3 py-2 rounded dark:bg-gray-700 phone" />
+        <input type="email" name="email" required placeholder="Email" class="w-full px-3 py-2 rounded dark:bg-gray-700" />
+        <input type="text" name="cpf" required maxlength="14" placeholder="CPF"class="w-full px-3 py-2 rounded dark:bg-gray-700 cpf" />
+        <select name="role" required class="w-full px-3 py-2 rounded dark:bg-gray-700 col-span-1 md:col-span-2">
+          <option value="" disabled selected>Selecione o cargo</option>
+          <option value="secretary">Secretaria</option>
+          <option value="direction">Direção</option>
+          <option value="support">Suporte</option>
+          <option value="teacher">Professor</option>
+          <option value="coordinator">Coordenador</option>
+        </select>
+      </div>
+      <p>Alunos e responsaveis devem fazer o cadastro no site, e ser liberado manualmente por alguem da equipe escolar.</p>
+
+      <div class="flex justify-end gap-2 pt-4">
+        <button type="button" onclick="toggleModal()" class="text-sm px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded"><strong>Cancelar</strong></button>
+        <button type="submit" class="text-sm px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded"><strong>Salvar</strong></button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  function toggleModal() {
+    document.getElementById('modal').classList.toggle('hidden');
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    applyMasks();
+  });
+</script>
+
+<script>
+  function toggleModal() {
+    document.getElementById('modal').classList.toggle('hidden');
+  }
+</script>
+{% endblock %}
